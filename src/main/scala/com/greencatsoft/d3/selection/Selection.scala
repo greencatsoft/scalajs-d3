@@ -17,6 +17,7 @@ trait SvgSelection extends Selection[SVGElement]
   with PropertyHolder[SVGElement]
   with DataDriven[SVGElement]
   with RemovableContainer[SVGElement]
+  with EventSource[SVGElement]
   with SvgContentEditor {
 
   override type ResultType = this.type
@@ -29,6 +30,7 @@ trait HtmlSelection extends Selection[HTMLElement]
   with PropertyHolder[HTMLElement]
   with DataDriven[HTMLElement]
   with RemovableContainer[HTMLElement]
+  with EventSource[HTMLElement]
   with HtmlContentEditor {
 
   override type ResultType = this.type
