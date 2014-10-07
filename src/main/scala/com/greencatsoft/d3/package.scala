@@ -2,66 +2,108 @@ package com.greencatsoft
 
 import scala.language.implicitConversions
 import scala.scalajs.js
-import scala.scalajs.js.GlobalScope
+import scala.scalajs.js.{ GlobalScope, UndefOr }
+import scala.scalajs.js.Any.{ jsArrayOps, wrapArray }
+import scala.scalajs.js.UndefOr.{ any2undefOrA, undefOr2ops }
 
-import org.scalajs.dom.{ HTMLElement, Node, SVGElement }
+import org.scalajs.dom.{ HTMLElement, Node, NodeList, SVGElement }
 
-import com.greencatsoft.d3.D3
-import com.greencatsoft.d3.selection.{ HtmlSelection, NodeSelection, Selection, SvgSelection }
+import com.greencatsoft.d3.D3Api
+import com.greencatsoft.d3.selection.{ GenericSelection, HtmlSelection, Selection, SvgSelection }
 
 package object d3 {
 
-  object global extends GlobalScope {
+  object generic extends D3Provider[Node, GenericSelection] {
+    trait D3 extends D3Api[Node, GenericSelection]
+
+    implicit override val d3: D3 = global.d3.asInstanceOf[D3]
+
+    private[d3] override def valid(node: UndefOr[Node]): Boolean = node.isDefined
+  }
+
+  object svg extends D3Provider[SVGElement, SvgSelection] {
+    trait D3 extends D3Api[SVGElement, SvgSelection]
+
+    implicit override val d3: D3 = global.d3.asInstanceOf[D3]
+
+    private[d3] override def valid(node: UndefOr[Node]): Boolean =
+      node.map(_.namespaceURI).filter(_ != null).exists(_.endsWith("svg"))
+  }
+
+  object html extends D3Provider[HTMLElement, HtmlSelection] {
+    trait D3 extends D3Api[HTMLElement, HtmlSelection]
+
+    implicit override val d3: D3 = global.d3.asInstanceOf[D3]
+
+    private[d3] override def valid(node: UndefOr[Node]): Boolean =
+      node.map(_.namespaceURI).filter(_ != null).exists(_.endsWith("html"))
+  }
+
+  private[d3] object global extends GlobalScope {
     val d3: D3Api[_, _] = ???
   }
 
-  object generic {
-    trait D3 extends D3Api[Node, NodeSelection]
+  private[d3] trait D3Provider[A <: Node, B <: Selection[A, B]] {
 
-    implicit val d3: D3 = ???
+    implicit val d3: D3Api[A, B]
 
-    implicit class D3Element(elem: Node)
-      extends AbstractD3Element[Node, NodeSelection](elem)
+    implicit def node2selection(elem: A): B = d3.select(elem)
 
-    implicit def node2selection(elem: Node): NodeSelection = d3.select(elem)
-  }
+    implicit class D3NodeResult(selection: B) {
 
-  object svg {
-    trait D3 extends D3Api[SVGElement, SvgSelection]
+      def node: Option[A] = selection.head.headOption.filter(_ != null)
 
-    implicit val d3: D3 = global.d3.asInstanceOf[D3]
-
-    implicit class D3Element(elem: SVGElement)
-      extends AbstractD3Element[SVGElement, SvgSelection](elem)
-
-    implicit def node2selection(elem: SVGElement): SvgSelection = d3.select(elem)
-  }
-
-  object html {
-    trait D3 extends D3Api[HTMLElement, HtmlSelection]
-
-    implicit val d3: D3 = global.d3.asInstanceOf[D3]
-
-    implicit class D3Element(elem: HTMLElement)
-      extends AbstractD3Element[HTMLElement, HtmlSelection](elem)
-
-    implicit def node2selection(elem: HTMLElement): HtmlSelection = d3.select(elem)
-  }
-
-  abstract class AbstractD3Element[A <: Node, B <: Selection[A, B]](element: A)(implicit api: D3Api[A, B]) {
-
-    def d3: D3Api[A, B] = api
-
-    def addClass(cls: String): A = {
-      d3.select(element).classed(js.Dictionary(cls -> true))
-      element
+      def nodes: Seq[A] = selection.head
     }
 
-    def removeClass(cls: String): A = {
-      d3.select(element).classed(js.Dictionary(cls -> false))
-      element
+    implicit class D3Element(element: A) {
+
+      def addClass(cls: String): A = {
+        d3.select(element).classed(js.Dictionary(cls -> true))
+        element
+      }
+
+      def removeClass(cls: String): A = {
+        d3.select(element).classed(js.Dictionary(cls -> false))
+        element
+      }
+
+      def hasClass(cls: String): Boolean = d3.select(element).classed(cls)
+
+      def closest(filter: A => Boolean): Option[A] = {
+        require(filter != null, "Missing argument 'filter'.")
+
+        def search(node: A, filter: A => Boolean): Option[A] =
+          (Seq(node) ++ Option(node.parentNode)
+            .filter(_.nodeType == 1)
+            .filter(valid(_))
+            .map(_.asInstanceOf[A]))
+            .find(filter)
+
+        search(element, filter)
+      }
+
+      def appendClone(elem: A, deepCopy: Boolean = true): A = {
+        require(elem != null, "Missing argument 'elem'.")
+
+        def removeId(e: A) {
+          d3.select(e).attr("id", null)
+          e.childNodes.foreach(removeId(_))
+        }
+
+        val clone = elem.cloneNode(deepCopy).asInstanceOf[A]
+        removeId(clone)
+
+        element.insertBefore(clone, elem).asInstanceOf[A]
+      }
     }
 
-    def hasClass(cls: String): Boolean = d3.select(element).classed(cls)
+    implicit class D3ElementList(list: NodeList) extends Traversable[A] {
+
+      override def foreach[U](f: A => U): Unit =
+        for (i <- 0 until list.length; item = list.item(i) if valid(item)) f(item.asInstanceOf[A])
+    }
+
+    private[d3] def valid(node: UndefOr[Node]): Boolean
   }
 }

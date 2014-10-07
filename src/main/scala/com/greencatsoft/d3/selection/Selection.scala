@@ -4,7 +4,7 @@ import scala.scalajs.js
 
 import org.scalajs.dom.{ HTMLElement, Node, SVGElement }
 
-trait Selection[A <: Node, B <: Selection[A, B]] extends js.Array[A]
+trait Selection[A <: Node, B <: Selection[A, B]] extends js.Array[js.Array[A]]
   with SelectionSource[A, B]
   with AttributeHolder[A, B]
   with Stylable[A, B]
@@ -16,7 +16,7 @@ trait Selection[A <: Node, B <: Selection[A, B]] extends js.Array[A]
   this: B =>
 }
 
-trait NodeSelection extends Selection[Node, NodeSelection]
+trait GenericSelection extends Selection[Node, GenericSelection]
 
 trait SvgSelection extends Selection[SVGElement, SvgSelection]
 
