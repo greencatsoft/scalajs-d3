@@ -4,24 +4,23 @@ import scala.scalajs.js
 
 import org.scalajs.dom.Node
 
-trait Stylable[A <: Node] extends js.Object {
-  this: Selection[A] =>
+trait Stylable[A <: Node, B <: Selection[A, B]] extends js.Object {
 
   def classed(name: String): Boolean = ???
 
-  def classed(classes: js.Dictionary[Boolean]): ResultType = ???
+  def classed(classes: js.Dictionary[Boolean]): B = ???
 
-  def classed[B](provider: ElementIterator[A, B]): ResultType = ???
+  def classed[T](provider: ElementIterator[A, T]): B = ???
 
   def style(name: String): String = ???
 
-  def style(name: String, value: String): ResultType = ???
+  def style(name: String, value: String): B = ???
 
-  def style(name: String, value: String, priority: Int): ResultType = ???
+  def style(name: String, value: String, priority: Int): B = ???
 
-  def style[B](name: String, provider: ElementIterator[A, B]): ResultType = ???
+  def style[T](name: String, provider: ElementIterator[A, T]): B = ???
 
-  def style[B](name: String, provider: ElementIterator[A, B], priority: Int): ResultType = ???
+  def style[T](name: String, provider: ElementIterator[A, T], priority: Int): B = ???
 
-  def style(values: js.Dictionary[String]): ResultType = ???
+  def style(values: js.Dictionary[String]): B = ???
 }

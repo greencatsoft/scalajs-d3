@@ -3,28 +3,22 @@ package com.greencatsoft.d3.selection
 import scala.scalajs.js
 import scala.scalajs.js.UndefOr
 
-import org.scalajs.dom.{ HTMLElement, Node, SVGElement }
+import org.scalajs.dom.{ HTMLElement, Node }
 
-trait ContentEditor[A <: Node] extends js.Object {
-  this: Selection[A] =>
+trait ContentEditor[A <: Node, B <: Selection[A, B]] extends js.Object {
 
   def text(): UndefOr[String] = ???
 
-  def text(content: String): ResultType = ???
+  def text(content: String): B = ???
 
-  def text[B](provider: ElementIterator[A, B]): ResultType = ???
+  def text[B](provider: ElementIterator[A, B]): B = ???
 }
 
-trait SvgContentEditor extends ContentEditor[SVGElement] {
-  this: Selection[SVGElement] =>
-}
-
-trait HtmlContentEditor extends ContentEditor[HTMLElement] {
-  this: Selection[HTMLElement] =>
+trait HtmlContentEditor[A <: HTMLElement, B <: Selection[A, B]] extends ContentEditor[A, B] {
 
   def html(): UndefOr[String] = ???
 
-  def html(content: String): ResultType = ???
+  def html(content: String): B = ???
 
-  def html[A](provider: ElementIterator[HTMLElement, A]): ResultType = ???
+  def html[A](provider: ElementIterator[HTMLElement, A]): B = ???
 }

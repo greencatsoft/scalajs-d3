@@ -1,37 +1,24 @@
 package com.greencatsoft.d3.selection
 
 import scala.scalajs.js
-import scala.scalajs.js.UndefOr
 
 import org.scalajs.dom.{ HTMLElement, Node, SVGElement }
 
-trait Selection[A <: Node] extends js.Array[A] {
-
-  type ResultType
+trait Selection[A <: Node, B <: Selection[A, B]] extends js.Array[A]
+  with SelectionSource[A, B]
+  with AttributeHolder[A, B]
+  with Stylable[A, B]
+  with PropertyHolder[A, B]
+  with DataDriven[A, B]
+  with Container[A, B]
+  with EventSource[A, B]
+  with ContentEditor[A, B] {
+  this: B =>
 }
 
-trait SvgSelection extends Selection[SVGElement]
-  with SelectionSource[SVGElement, SvgSelection]
-  with AttributeHolder[SVGElement]
-  with Stylable[SVGElement]
-  with PropertyHolder[SVGElement]
-  with DataDriven[SVGElement]
-  with RemovableContainer[SVGElement]
-  with EventSource[SVGElement]
-  with SvgContentEditor {
+trait NodeSelection extends Selection[Node, NodeSelection]
 
-  override type ResultType = this.type
-}
+trait SvgSelection extends Selection[SVGElement, SvgSelection]
 
-trait HtmlSelection extends Selection[HTMLElement]
-  with SelectionSource[HTMLElement, HtmlSelection]
-  with AttributeHolder[HTMLElement]
-  with Stylable[HTMLElement]
-  with PropertyHolder[HTMLElement]
-  with DataDriven[HTMLElement]
-  with RemovableContainer[HTMLElement]
-  with EventSource[HTMLElement]
-  with HtmlContentEditor {
-
-  override type ResultType = this.type
-}
+trait HtmlSelection extends Selection[HTMLElement, HtmlSelection]
+  with HtmlContentEditor[HTMLElement, HtmlSelection]

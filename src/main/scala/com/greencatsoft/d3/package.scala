@@ -2,24 +2,28 @@ package com.greencatsoft
 
 import scala.scalajs.js.GlobalScope
 
+import org.scalajs.dom.{ HTMLElement, Node, SVGElement }
+
 import com.greencatsoft.d3.D3
-import com.greencatsoft.d3.selection.{ HtmlSelectionSource, SvgSelectionSource }
+import com.greencatsoft.d3.selection.{ HtmlSelection, NodeSelection, SvgSelection }
 
 package object d3 {
 
-  type D3Svg = D3 with SvgSelectionSource
-
-  type D3Html = D3 with HtmlSelectionSource
-
   object Global extends GlobalScope {
-    val d3: D3 = ???
+    type D3Generic = D3[Node, NodeSelection]
+
+    implicit val d3: D3Generic = ???
   }
 
   object svg {
-    def d3: D3Svg = Global.d3.asInstanceOf[D3Svg]
+    type D3Svg = D3[SVGElement, SvgSelection]
+
+    implicit val d3: D3Svg = Global.d3.asInstanceOf[D3Svg]
   }
 
   object html {
-    def d3: D3Html = Global.d3.asInstanceOf[D3Html]
+    type D3Html = D3[HTMLElement, HtmlSelection]
+
+    implicit val d3: D3Html = Global.d3.asInstanceOf[D3Html]
   }
 }

@@ -2,13 +2,13 @@ package com.greencatsoft.d3
 
 import scala.scalajs.js
 import scala.scalajs.js.UndefOr
-import scala.scalajs.js.annotation.JSExportAll
 
 import org.scalajs.dom.{ Event, Node }
 
 import com.greencatsoft.d3.common.Point
+import com.greencatsoft.d3.selection.{ Selection, SelectionSource }
 
-trait D3 extends js.Object {
+trait D3[A <: Node, B <: Selection[A, B]] extends js.Object with SelectionSource[A, B] {
 
   def event: UndefOr[Event] = ???
 

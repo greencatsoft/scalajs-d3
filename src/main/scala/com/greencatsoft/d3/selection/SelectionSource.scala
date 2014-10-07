@@ -2,10 +2,9 @@ package com.greencatsoft.d3.selection
 
 import scala.scalajs.js
 
-import org.scalajs.dom.{ HTMLElement, Node, NodeList, SVGElement }
+import org.scalajs.dom.{ Node, NodeList }
 
-trait SelectionSource[A <: Node, B <: Selection[A]] extends js.Object {
-  this: Selection[A] =>
+trait SelectionSource[A <: Node, B <: Selection[A, B]] extends js.Object {
 
   def select(selector: String): B = ???
 
@@ -18,12 +17,4 @@ trait SelectionSource[A <: Node, B <: Selection[A]] extends js.Object {
   def selectAll(nodes: NodeList): B = ???
 
   def selection(): B
-}
-
-trait SvgSelectionSource extends SelectionSource[SVGElement, SvgSelection] {
-  this: Selection[SVGElement] =>
-}
-
-trait HtmlSelectionSource extends SelectionSource[HTMLElement, HtmlSelection] {
-  this: Selection[HTMLElement] =>
 }

@@ -5,14 +5,13 @@ import scala.scalajs.js.UndefOr
 
 import org.scalajs.dom.Node
 
-trait EventSource[A <: Node] extends js.Object {
-  this: Selection[A] =>
+trait EventSource[A <: Node, B <: Selection[A, B]] extends js.Object {
 
   def on[B](event: String): UndefOr[ElementIterator[A, B]]
 
-  def on[B](event: String, listener: ElementIterator[A, B], capture: Boolean = false): ResultType = ???
+  def on[B](event: String, listener: ElementIterator[A, B], capture: Boolean = false): B = ???
 
-  def transition(): ResultType = ???
+  def transition(): B = ???
 
-  def interrupt(): ResultType = ???
+  def interrupt(): B = ???
 }

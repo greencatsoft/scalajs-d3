@@ -1,53 +1,50 @@
 package com.greencatsoft.d3.selection
 
 import scala.scalajs.js
-import org.scalajs.dom.Node
 import scala.scalajs.js.UndefOr
 
-trait DataDriven[A <: Node] extends js.Object {
-  this: Selection[_] =>
+import org.scalajs.dom.Node
+
+trait DataDriven[A <: Node, B <: Selection[A, B]] extends js.Object {
 
   import DataDriven._
 
-  def data[B](): js.Array[B] = ???
+  def data[T](): js.Array[T] = ???
 
-  def data(values: js.Array[Any]): BoundSelection[A, this.type] = ???
+  def data(values: js.Array[Any]): BoundSelection[A, B] = ???
 
-  def data[B](values: js.Array[B], key: KeyFunction[B]): BoundSelection[A, this.type] = ???
+  def data[T](values: js.Array[T], key: KeyFunction[T]): BoundSelection[A, B] = ???
 
-  def data(provider: js.Function1[Any, Any]): BoundSelection[A, this.type] = ???
+  def data(provider: js.Function1[Any, Any]): BoundSelection[A, B] = ???
 
-  def data[B](provider: js.Function1[Any, B], key: KeyFunction[B]): BoundSelection[A, this.type] = ???
+  def data[T](provider: js.Function1[Any, T], key: KeyFunction[T]): BoundSelection[A, B] = ???
 
-  def datum[B](): UndefOr[B] = ???
+  def datum[T](): UndefOr[T] = ???
 
-  def datum(value: Any): ResultType = ???
+  def datum(value: Any): B = ???
 
-  def datum[B](value: ElementIterator[A, B]): ResultType = ???
+  def datum[T](value: ElementIterator[A, T]): B = ???
 
-  def filter(selector: String): ResultType = ???
+  def filter(selector: String): B = ???
 
-  def filter[B](filter: ElementIterator[A, B]): ResultType = ???
+  def filter[T](filter: ElementIterator[A, T]): B = ???
 
-  def sort[B](comparator: js.Function2[B, B, Int]): ResultType = ???
+  def sort[T](comparator: js.Function2[T, T, Int]): B = ???
 
-  def order(): ResultType = ???
+  def order(): B = ???
 }
 
 object DataDriven {
 
   type KeyFunction[A] = js.ThisFunction2[Any, A, Int, Any]
 
-  trait BoundSelection[A <: Node, B <: DataDriven[A]] extends js.Object {
+  trait BoundSelection[A <: Node, B <: Selection[A, B]] extends js.Object {
     this: B =>
 
-    def enter(): SelectionBuilder[A, this.type] = ???
+    def enter(): SelectionBuilder[A, B] = ???
 
     def exit(): B = ???
   }
 
-  trait SelectionBuilder[A <: Node, B <: DataDriven[A]] extends Selection[A] with Container[A] {
-
-    override type ResultType = B
-  }
+  trait SelectionBuilder[A <: Node, B <: Selection[A, B]] extends Container[A, B]
 }
