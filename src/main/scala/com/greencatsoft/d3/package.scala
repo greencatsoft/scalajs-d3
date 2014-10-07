@@ -20,17 +20,19 @@ package object d3 {
 
     implicit val d3: D3 = ???
 
-    implicit class D3GenericElement(elem: Node) extends D3Element[Node, NodeSelection](elem)
+    implicit class D3Element(elem: Node)
+      extends AbstractD3Element[Node, NodeSelection](elem)
 
     implicit def node2selection(elem: Node): NodeSelection = d3.select(elem)
   }
 
   object svg {
-   trait D3 extends D3Api[SVGElement, SvgSelection]
+    trait D3 extends D3Api[SVGElement, SvgSelection]
 
     implicit val d3: D3 = global.d3.asInstanceOf[D3]
 
-    implicit class D3SvgElement(elem: SVGElement) extends D3Element[SVGElement, SvgSelection](elem)
+    implicit class D3Element(elem: SVGElement)
+      extends AbstractD3Element[SVGElement, SvgSelection](elem)
 
     implicit def node2selection(elem: SVGElement): SvgSelection = d3.select(elem)
   }
@@ -40,12 +42,13 @@ package object d3 {
 
     implicit val d3: D3 = global.d3.asInstanceOf[D3]
 
-    implicit class D3HtmlElement(elem: HTMLElement) extends D3Element[HTMLElement, HtmlSelection](elem)
+    implicit class D3Element(elem: HTMLElement)
+      extends AbstractD3Element[HTMLElement, HtmlSelection](elem)
 
     implicit def node2selection(elem: HTMLElement): HtmlSelection = d3.select(elem)
   }
 
-  class D3Element[A <: Node, B <: Selection[A, B]](element: A)(implicit api: D3Api[A, B]) {
+  abstract class AbstractD3Element[A <: Node, B <: Selection[A, B]](element: A)(implicit api: D3Api[A, B]) {
 
     def d3: D3Api[A, B] = api
 
