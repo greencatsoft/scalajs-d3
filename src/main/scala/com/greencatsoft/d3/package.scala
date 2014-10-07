@@ -1,29 +1,64 @@
 package com.greencatsoft
 
+import scala.language.implicitConversions
+import scala.scalajs.js
 import scala.scalajs.js.GlobalScope
 
 import org.scalajs.dom.{ HTMLElement, Node, SVGElement }
 
 import com.greencatsoft.d3.D3
-import com.greencatsoft.d3.selection.{ HtmlSelection, NodeSelection, SvgSelection }
+import com.greencatsoft.d3.selection.{ HtmlSelection, NodeSelection, Selection, SvgSelection }
 
 package object d3 {
 
-  object Global extends GlobalScope {
-    type D3Generic = D3[Node, NodeSelection]
+  object global extends GlobalScope {
+    val d3: D3Api[_, _] = ???
+  }
 
-    implicit val d3: D3Generic = ???
+  object generic {
+    trait D3 extends D3Api[Node, NodeSelection]
+
+    implicit val d3: D3 = ???
+
+    implicit class D3GenericElement(elem: Node) extends D3Element[Node, NodeSelection](elem)
+
+    implicit def node2selection(elem: Node): NodeSelection = d3.select(elem)
   }
 
   object svg {
-    type D3Svg = D3[SVGElement, SvgSelection]
+   trait D3 extends D3Api[SVGElement, SvgSelection]
 
-    implicit val d3: D3Svg = Global.d3.asInstanceOf[D3Svg]
+    implicit val d3: D3 = global.d3.asInstanceOf[D3]
+
+    implicit class D3SvgElement(elem: SVGElement) extends D3Element[SVGElement, SvgSelection](elem)
+
+    implicit def node2selection(elem: SVGElement): SvgSelection = d3.select(elem)
   }
 
   object html {
-    type D3Html = D3[HTMLElement, HtmlSelection]
+    trait D3 extends D3Api[HTMLElement, HtmlSelection]
 
-    implicit val d3: D3Html = Global.d3.asInstanceOf[D3Html]
+    implicit val d3: D3 = global.d3.asInstanceOf[D3]
+
+    implicit class D3HtmlElement(elem: HTMLElement) extends D3Element[HTMLElement, HtmlSelection](elem)
+
+    implicit def node2selection(elem: HTMLElement): HtmlSelection = d3.select(elem)
+  }
+
+  class D3Element[A <: Node, B <: Selection[A, B]](element: A)(implicit api: D3Api[A, B]) {
+
+    def d3: D3Api[A, B] = api
+
+    def addClass(cls: String): A = {
+      d3.select(element).classed(js.Dictionary(cls -> true))
+      element
+    }
+
+    def removeClass(cls: String): A = {
+      d3.select(element).classed(js.Dictionary(cls -> false))
+      element
+    }
+
+    def hasClass(cls: String): Boolean = d3.select(element).classed(cls)
   }
 }

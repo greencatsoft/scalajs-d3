@@ -8,7 +8,7 @@ import org.scalajs.dom.{ Event, Node }
 import com.greencatsoft.d3.common.Point
 import com.greencatsoft.d3.selection.{ Selection, SelectionSource }
 
-trait D3[A <: Node, B <: Selection[A, B]] extends js.Object with SelectionSource[A, B] {
+trait D3Api[A <: Node, B <: Selection[A, B]] extends js.Object with SelectionSource[A, B] {
 
   def event: UndefOr[Event] = ???
 
@@ -21,7 +21,7 @@ trait D3[A <: Node, B <: Selection[A, B]] extends js.Object with SelectionSource
 
 object D3 {
 
-  import Global.d3
+  import global.d3
 
   def mouse(container: Node): Point = {
     val point = d3.mouse(container) ensuring (_.size == 2)
