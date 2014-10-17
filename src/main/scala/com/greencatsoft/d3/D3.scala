@@ -12,11 +12,11 @@ trait D3Api[A <: Node, B <: Selection[A, B]] extends js.Object with SelectionSou
 
   def event: UndefOr[Event] = ???
 
-  def mouse(container: Node): js.Array[Int] = ???
+  def mouse(container: Node): js.Array[Double] = ???
 
-  def touch(container: Node, identifier: String): js.Array[js.Array[Int]] = ???
+  def touch(container: Node, identifier: String): js.Array[js.Array[Double]] = ???
 
-  def touches(container: Node): js.Array[js.Array[Int]] = ???
+  def touches(container: Node): js.Array[js.Array[Double]] = ???
 }
 
 object D3 {
