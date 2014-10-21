@@ -23,6 +23,8 @@ object D3 {
 
   import global.d3
 
+  def event[A <: Event]: Option[A] = d3.event.toOption.map(_.asInstanceOf[A])
+
   def mouse(container: Node): Point = {
     val point = d3.mouse(container) ensuring (_.size == 2)
     Point(point(0), point(1))
