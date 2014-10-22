@@ -2,6 +2,7 @@ package com.greencatsoft.d3.common
 
 import scala.language.implicitConversions
 import scala.math.{ pow, sqrt }
+import scala.scalajs.js
 import scala.scalajs.js.annotation.JSExportAll
 
 import org.scalajs.dom.SVGPoint
@@ -22,4 +23,8 @@ case class Point(x: Double, y: Double) {
 object Point {
 
   implicit def fromSvgPoint(point: SVGPoint) = Point(point.x, point.y)
+
+  implicit def fromArray(point: js.Array[Double]) = Point(point(0), point(1))
+
+  implicit def toArray(point: Point) = js.Array(point.x, point.y)
 }
