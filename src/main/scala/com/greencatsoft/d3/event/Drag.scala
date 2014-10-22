@@ -1,8 +1,9 @@
 package com.greencatsoft.d3.event
 
 import org.scalajs.dom.{ MouseEvent, Node }
-
 import com.greencatsoft.d3.selection.{ ElementIterator, Selection }
+import scala.scalajs.js.UndefOr
+import com.greencatsoft.d3.common.Point
 
 trait Drag[A <: Node, B <: Selection[A, B]] extends EventSource[A, B] {
 
@@ -11,17 +12,25 @@ trait Drag[A <: Node, B <: Selection[A, B]] extends EventSource[A, B] {
   def origin[T](fn: ElementIterator[A, T]): B = ???
 }
 
-trait DragStartEvent extends D3Event[MouseEvent]
+trait D3DragEvent extends D3Event[MouseEvent] {
 
-trait DragEvent extends D3Event[MouseEvent] {
+  val x: UndefOr[Double] = ???
 
-  val x: Double = ???
+  val y: UndefOr[Double] = ???
 
-  val y: Double = ???
+  val dx: UndefOr[Double] = ???
 
-  val dx: Double = ???
-
-  val dy: Double = ???
+  val dy: UndefOr[Double] = ???
 }
 
-trait DragEndEvent extends D3Event[MouseEvent]
+object Drag {
+
+  implicit class DragEvent(val event: D3DragEvent) {
+
+    def location: Option[Point] =
+      for (x <- event.x.toOption; y <- event.y.toOption) yield Point(x, y)
+
+    def delta: Option[Point] =
+      for (x <- event.dx.toOption; y <- event.dy.toOption) yield Point(x, y)
+  }
+}
