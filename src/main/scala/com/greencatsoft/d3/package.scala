@@ -73,14 +73,18 @@ package object d3 {
       def closest(filter: A => Boolean): Option[A] = {
         require(filter != null, "Missing argument 'filter'.")
 
-        def search(node: A, filter: A => Boolean): Option[A] =
-          (Seq(node) ++ Option(node.parentNode)
-            .filter(_.nodeType == 1)
-            .filter(valid(_))
-            .map(_.asInstanceOf[A]))
-            .find(filter)
+        def search(node: Node): Option[A] = {
+          val result = Some(node) collect {
+            case n if n.nodeType == 1 && valid(n) => n.asInstanceOf[A]
+          }
 
-        search(element, filter)
+          result.find(filter) match {
+            case Some(e) => Some(e)
+            case None => Option(node.parentNode).map(search(_)).flatten
+          }
+        }
+
+        search(element)
       }
 
       def appendClone(elem: A, deepCopy: Boolean = true): A = {
