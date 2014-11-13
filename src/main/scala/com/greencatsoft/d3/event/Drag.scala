@@ -1,9 +1,13 @@
 package com.greencatsoft.d3.event
 
-import org.scalajs.dom.{ MouseEvent, Node }
-import com.greencatsoft.d3.selection.{ ElementIterator, Selection }
+import scala.scalajs.js
 import scala.scalajs.js.UndefOr
+import scala.scalajs.js.UndefOr.undefOr2ops
+
+import org.scalajs.dom.{ Event, Node, TouchList }
+
 import com.greencatsoft.d3.common.Point
+import com.greencatsoft.d3.selection.{ ElementIterator, Selection }
 
 trait Drag[A <: Node, B <: Selection[A, B]] extends EventSource[A, B] {
 
@@ -12,7 +16,7 @@ trait Drag[A <: Node, B <: Selection[A, B]] extends EventSource[A, B] {
   def origin[T](fn: ElementIterator[A, T]): B = ???
 }
 
-trait D3DragEvent extends D3Event[MouseEvent] {
+trait D3DragEvent extends D3Event[Event] {
 
   val x: UndefOr[Double] = ???
 
@@ -32,5 +36,15 @@ object Drag {
 
     def delta: Option[Point] =
       for (x <- event.dx.toOption; y <- event.dy.toOption) yield Point(x, y)
+
+    def touches: Option[TouchList] = {
+      val source = event.sourceEvent.asInstanceOf[js.Dynamic]
+      source.touches.asInstanceOf[UndefOr[TouchList]].toOption
+    }
+
+    def button: Option[Int] = {
+      val source = event.sourceEvent.asInstanceOf[js.Dynamic]
+      source.button.asInstanceOf[UndefOr[Int]].toOption
+    }
   }
 }
