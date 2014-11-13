@@ -8,12 +8,14 @@ import org.scalajs.dom.SVGPoint
 
 case class Point(x: Double, y: Double) {
 
-  def delta(point: Point): Point = Point(x - point.x, y - point.y)
+  def +(point: Point): Point = Point(x + point.x, y + point.y)
 
-  def add(point: Point): Point = Point(x + point.x, y + point.y)
+  def -(point: Point): Point = this + !point
+
+  def unary_!(): Point = Point(-x, -y)
 
   def distance(point: Point): Double = {
-    val p = delta(point)
+    val p = this - point
     sqrt(pow(p.x, 2) + pow(p.y, 2))
   }
 }

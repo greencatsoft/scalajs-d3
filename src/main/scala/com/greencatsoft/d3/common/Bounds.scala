@@ -26,10 +26,10 @@ case class Bounds(x: Double, y: Double, width: Double, height: Double) {
       && (y <= bounds.y && y + height >= bounds.y + bounds.height))
   }
 
-  def grows(size: Double): Bounds =
+  def +(size: Double): Bounds =
     Bounds(x - size, y - size, width + (size * 2), height + (size * 2))
 
-  def union(bounds: Bounds): Bounds = {
+  def +(bounds: Bounds): Bounds = {
     val sx = min(x, bounds.x)
     val sy = min(y, bounds.y)
 
@@ -39,7 +39,19 @@ case class Bounds(x: Double, y: Double, width: Double, height: Double) {
     Bounds(sx, sy, mx - sx, my - sy)
   }
 
+  def +(point: Point): Bounds = {
+    val sx = min(x, point.x)
+    val sy = min(y, point.y)
+
+    val mx = min(x + width, point.x)
+    val my = min(y + height, point.y)
+
+    Bounds(sx, sy, mx - sx, my - sy)
+  }
+
   def location = Point(x, y)
+
+  def center = Point(x + width / 2, y + height / 2)
 
   def size = Dimension(width, height)
 
