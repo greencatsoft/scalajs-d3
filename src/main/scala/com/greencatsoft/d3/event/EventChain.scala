@@ -15,11 +15,13 @@ trait EventChain[A <: Node, B <: Selection[A, B]] extends js.Object {
 
   def event: UndefOr[D3Event[_]] = ???
 
-  def mouse(container: Node): js.Array[Double] = ???
+  def mouse(container: Node): UndefOr[js.Array[Double]] = ???
 
-  def touch(container: Node, identifier: String): js.Array[js.Array[Double]] = ???
+  def touch(container: Node): UndefOr[js.Array[js.Array[Double]]] = ???
 
-  def touches(container: Node): js.Array[js.Array[Double]] = ???
+  def touch(container: Node, identifier: String): UndefOr[js.Array[js.Array[Double]]] = ???
+
+  def touches(container: Node): UndefOr[js.Array[js.Array[Double]]] = ???
 
   def behavior: BehaviorFactory[A, B] = ???
 }
@@ -32,14 +34,15 @@ object EventChain {
 
   def sourceEvent[A <: Event]: Option[A] = event[D3Event[A]].map(_.sourceEvent.toOption).flatten
 
-  def mouse(container: Node): Point = {
-    val point = d3.mouse(container) ensuring (_.size == 2)
-    Point(point(0), point(1))
-  }
+  def mouse(container: Node): Option[Point] =
+    d3.mouse(container).toOption.map(point => Point(point(0), point(1)))
+
+  def touch(container: Node): Seq[Point] =
+    d3.touch(container).toOption.toSeq.flatten.map(p => Point(p(0), p(1)))
 
   def touch(container: Node, identifier: String): Seq[Point] =
-    d3.touch(container, identifier).toSeq.map(p => Point(p(0), p(1)))
+    d3.touch(container, identifier).toOption.toSeq.flatten.map(p => Point(p(0), p(1)))
 
   def touches(container: Node): Seq[Point] =
-    d3.touches(container).toSeq.map(p => Point(p(0), p(1)))
+    d3.touches(container).toOption.toSeq.flatten.map(p => Point(p(0), p(1)))
 }
