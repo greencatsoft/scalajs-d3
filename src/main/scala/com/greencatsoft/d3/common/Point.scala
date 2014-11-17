@@ -4,7 +4,7 @@ import scala.language.implicitConversions
 import scala.math.{ pow, sqrt }
 import scala.scalajs.js
 
-import org.scalajs.dom.SVGPoint
+import org.scalajs.dom.{ SVGPoint, SVGSVGElement }
 
 case class Point(x: Double, y: Double) {
 
@@ -23,6 +23,15 @@ case class Point(x: Double, y: Double) {
 object Point {
 
   implicit def fromSvgPoint(point: SVGPoint) = Point(point.x, point.y)
+
+  implicit def toSvgPoint(point: Point)(implicit ownerNode: SVGSVGElement): SVGPoint = {
+    val p = ownerNode.createSVGPoint
+
+    p.x = point.x
+    p.y = point.y
+
+    return p
+  }
 
   implicit def fromArray(point: js.Array[Double]) = Point(point(0), point(1))
 
