@@ -4,9 +4,9 @@ import scala.language.implicitConversions
 import scala.math.{ pow, sqrt }
 import scala.scalajs.js
 
-import org.scalajs.dom.{ SVGPoint, SVGSVGElement }
+import org.scalajs.dom.{ SVGMatrix, SVGPoint, SVGSVGElement }
 
-case class Point(x: Double, y: Double) {
+case class Point(x: Double, y: Double) extends Transformable[Point] {
 
   def +(point: Point): Point = Point(x + point.x, y + point.y)
 
@@ -17,6 +17,15 @@ case class Point(x: Double, y: Double) {
   def distance(point: Point): Double = {
     val p = this - point
     sqrt(pow(p.x, 2) + pow(p.y, 2))
+  }
+
+  override def matrixTransform(matrix: SVGMatrix)(implicit ownerNode: SVGSVGElement): Point = {
+    val p = ownerNode.createSVGPoint
+
+    p.x = x
+    p.y = y
+
+    Point.fromSvgPoint(p.matrixTransform(matrix))
   }
 }
 

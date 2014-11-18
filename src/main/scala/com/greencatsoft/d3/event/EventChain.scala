@@ -6,6 +6,7 @@ import scala.scalajs.js.UndefOr
 import scala.scalajs.js.UndefOr.undefOr2ops
 
 import org.scalajs.dom.{ Event, Node }
+import org.scalajs.dom.extensions.Castable
 
 import com.greencatsoft.d3.common.Point
 import com.greencatsoft.d3.global.d3
@@ -30,7 +31,7 @@ object EventChain {
 
   import com.greencatsoft.d3.global.d3
 
-  def event[A <: Event]: Option[A] = d3.event.toOption.map(_.asInstanceOf[A])
+  def event[A <: Event]: Option[A] = d3.event.toOption.map(_.cast[A])
 
   def sourceEvent[A <: Event]: Option[A] = event[D3Event[A]].map(_.sourceEvent.toOption).flatten
 

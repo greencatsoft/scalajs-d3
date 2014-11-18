@@ -1,11 +1,11 @@
 package com.greencatsoft.d3.common
 
 import scala.language.implicitConversions
-import scala.math.min
+import scala.math.{ max, min }
 
-import org.scalajs.dom.{ ClientRect, SVGRect, SVGSVGElement }
+import org.scalajs.dom.{ ClientRect, SVGMatrix, SVGRect, SVGSVGElement }
 
-case class Bounds(x: Double, y: Double, width: Double, height: Double) {
+case class Bounds(x: Double, y: Double, width: Double, height: Double) extends Transformable[Bounds] {
 
   def intersects(bounds: Bounds): Boolean = {
     require(bounds != null, "Missing argument 'bounds'.")
@@ -33,8 +33,8 @@ case class Bounds(x: Double, y: Double, width: Double, height: Double) {
     val sx = min(x, bounds.x)
     val sy = min(y, bounds.y)
 
-    val mx = min(x + width, bounds.x + bounds.width)
-    val my = min(y + height, bounds.y + bounds.height)
+    val mx = max(x + width, bounds.x + bounds.width)
+    val my = max(y + height, bounds.y + bounds.height)
 
     Bounds(sx, sy, mx - sx, my - sy)
   }
@@ -43,8 +43,8 @@ case class Bounds(x: Double, y: Double, width: Double, height: Double) {
     val sx = min(x, point.x)
     val sy = min(y, point.y)
 
-    val mx = min(x + width, point.x)
-    val my = min(y + height, point.y)
+    val mx = max(x + width, point.x)
+    val my = max(y + height, point.y)
 
     Bounds(sx, sy, mx - sx, my - sy)
   }
@@ -55,12 +55,22 @@ case class Bounds(x: Double, y: Double, width: Double, height: Double) {
 
   def size = Dimension(width, height)
 
+  override def matrixTransform(matrix: SVGMatrix)(implicit ownerNode: SVGSVGElement): Bounds =
+    Quad.fromBounds(this).matrixTransform(matrix).bounds
+
   override def toString(): String = s"Bounds(x: $x, y: $y, width: $width, height: $height)"
 }
 
 object Bounds {
 
   def empty: Bounds = new Bounds(0, 0, 0, 0)
+
+  def empty(location: Point): Bounds = new Bounds(location.x, location.y, 0, 0)
+
+  def merge(bounds: Bounds*): Bounds = bounds match {
+    case head :: tail => tail.fold(head)((b1, b2) => b1 + b2)
+    case Nil => Bounds.empty
+  }
 
   implicit def svgRect2Bounds(rect: SVGRect) = {
     require(rect != null, "Missing argument 'rect'.")

@@ -5,6 +5,7 @@ import scala.scalajs.js.UndefOr
 import scala.scalajs.js.UndefOr.undefOr2ops
 
 import org.scalajs.dom.{ Event, Node, TouchList }
+import org.scalajs.dom.extensions.Castable
 
 import com.greencatsoft.d3.common.Point
 import com.greencatsoft.d3.selection.{ ElementIterator, Selection }
@@ -38,13 +39,13 @@ object Drag {
       for (x <- event.dx.toOption; y <- event.dy.toOption) yield Point(x, y)
 
     def touches: Option[TouchList] = {
-      val source = event.sourceEvent.asInstanceOf[js.Dynamic]
-      source.touches.asInstanceOf[UndefOr[TouchList]].toOption
+      val source = event.sourceEvent.cast[js.Dynamic]
+      source.touches.cast[UndefOr[TouchList]].toOption
     }
 
     def button: Option[Int] = {
-      val source = event.sourceEvent.asInstanceOf[js.Dynamic]
-      source.button.asInstanceOf[UndefOr[Int]].toOption
+      val source = event.sourceEvent.cast[js.Dynamic]
+      source.button.cast[UndefOr[Int]].toOption
     }
   }
 }
