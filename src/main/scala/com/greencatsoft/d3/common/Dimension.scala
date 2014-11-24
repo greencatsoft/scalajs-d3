@@ -1,5 +1,8 @@
 package com.greencatsoft.d3.common
 
+import scala.scalajs.js.annotation.JSExportAll
+
+@JSExportAll
 case class Dimension(width: Double, height: Double) {
 
   def +(dimension: Dimension): Dimension =

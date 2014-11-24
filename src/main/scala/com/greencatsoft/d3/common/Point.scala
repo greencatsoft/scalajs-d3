@@ -3,9 +3,11 @@ package com.greencatsoft.d3.common
 import scala.language.implicitConversions
 import scala.math.{ pow, sqrt }
 import scala.scalajs.js
+import scala.scalajs.js.annotation.JSExportAll
 
 import org.scalajs.dom.{ SVGMatrix, SVGPoint, SVGSVGElement }
 
+@JSExportAll
 case class Point(x: Double, y: Double) extends Transformable[Point] {
 
   def +(point: Point): Point = Point(x + point.x, y + point.y)

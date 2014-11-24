@@ -2,9 +2,11 @@ package com.greencatsoft.d3.common
 
 import scala.language.implicitConversions
 import scala.math.{ max, min }
+import scala.scalajs.js.annotation.JSExportAll
 
 import org.scalajs.dom.{ ClientRect, SVGMatrix, SVGRect, SVGSVGElement }
 
+@JSExportAll
 case class Bounds(x: Double, y: Double, width: Double, height: Double) extends Transformable[Bounds] {
 
   def intersects(bounds: Bounds): Boolean = {
