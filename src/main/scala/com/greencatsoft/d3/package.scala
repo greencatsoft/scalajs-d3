@@ -52,6 +52,9 @@ package object d3 {
       def toLocalLocation(fromElem: LocatableElement): Point =
         toLocalBounds(fromElem).location
 
+      def toLocalCoords[A <: Transformable[A]](transformable: A): A =
+        transformable.matrixTransform(element.getScreenCTM.inverse)
+
       def toLocalCoords[A <: Transformable[A]](transformable: A, fromElem: LocatableElement): A =
         transformable.matrixTransform(getTransformToElementFix(fromElem).inverse)
 
