@@ -1,6 +1,7 @@
 package com.greencatsoft.d3.common
 
 import scala.language.implicitConversions
+import scala.scalajs.js.annotation.JSExportAll
 
 import org.scalajs.dom.{ SVGMatrix, SVGSVGElement }
 
@@ -8,6 +9,7 @@ import org.scalajs.dom.{ SVGMatrix, SVGSVGElement }
  * DomQuad interface.
  * @see http://dev.w3.org/fxtf/geometry/#dom-domquad
  */
+@JSExportAll
 case class Quad(p1: Point, p2: Point, p3: Point, p4: Point) extends Transformable[Quad] {
   require(p1 != null, "Missing argument 'p1'.")
   require(p2 != null, "Missing argument 'p2'.")
