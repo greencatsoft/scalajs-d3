@@ -14,6 +14,8 @@ case class Point(x: Double, y: Double) extends Transformable[Point] {
 
   def -(point: Point): Point = this + !point
 
+  def *(ratio: Double): Point = Point(x * ratio, y * ratio)
+
   def unary_!(): Point = Point(-x, -y)
 
   def distance(point: Point): Double = {
