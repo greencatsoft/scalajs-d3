@@ -6,21 +6,21 @@ import org.scalajs.dom.Node
 
 trait Stylable[A <: Node, B <: Selection[A, B]] extends js.Object {
 
-  def classed(name: String): Boolean = ???
+  def classed(name: String): Boolean = js.native
 
-  def classed(classes: js.Dictionary[Boolean]): B = ???
+  def classed(classes: js.Dictionary[Boolean]): B = js.native
 
-  def classed[T](provider: ElementIterator[A, T]): B = ???
+  def classed[T](provider: ElementIterator[A, T]): B = js.native
 
-  def style(name: String): String = ???
+  def style(name: String): String = js.native
 
-  def style(name: String, value: String): B = ???
+  def style(name: String, value: String): B = js.native
 
-  def style(name: String, value: String, priority: Int): B = ???
+  def style(name: String, value: String, priority: Int): B = js.native
 
-  def style[T](name: String, provider: ElementIterator[A, T]): B = ???
+  def style[T](name: String, provider: ElementIterator[A, T]): B = js.native
 
-  def style[T](name: String, provider: ElementIterator[A, T], priority: Int): B = ???
+  def style[T](name: String, provider: ElementIterator[A, T], priority: Int): B = js.native
 
-  def style(values: js.Dictionary[String]): B = ???
+  def style(values: js.Dictionary[String]): B = js.native
 }

@@ -1,6 +1,7 @@
 package com.greencatsoft
 
 import scala.language.implicitConversions
+
 import scala.scalajs.js
 import scala.scalajs.js.{ GlobalScope, RegExp, UndefOr }
 import scala.scalajs.js.Any.{ jsArrayOps, wrapArray }
@@ -104,7 +105,7 @@ package object d3 {
   }
 
   private[d3] object global extends GlobalScope {
-    val d3: D3Api[_, _] = ???
+    val d3: D3Api[_, _] = js.native
   }
 
   private[d3] trait D3Provider[A <: Node, B <: Selection[A, B]] {

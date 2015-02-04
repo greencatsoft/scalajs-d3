@@ -9,29 +9,29 @@ trait DataDriven[A <: Node, B <: Selection[A, B]] extends js.Object {
 
   import DataDriven._
 
-  def data[T](): js.Array[T] = ???
+  def data[T](): js.Array[T] = js.native
 
-  def data(values: js.Array[Any]): BoundSelection[A, B] = ???
+  def data(values: js.Array[Any]): BoundSelection[A, B] = js.native
 
-  def data[T](values: js.Array[T], key: KeyFunction[T]): BoundSelection[A, B] = ???
+  def data[T](values: js.Array[T], key: KeyFunction[T]): BoundSelection[A, B] = js.native
 
-  def data(provider: js.Function1[Any, Any]): BoundSelection[A, B] = ???
+  def data(provider: js.Function1[Any, Any]): BoundSelection[A, B] = js.native
 
-  def data[T](provider: js.Function1[Any, T], key: KeyFunction[T]): BoundSelection[A, B] = ???
+  def data[T](provider: js.Function1[Any, T], key: KeyFunction[T]): BoundSelection[A, B] = js.native
 
-  def datum[T](): UndefOr[T] = ???
+  def datum[T](): UndefOr[T] = js.native
 
-  def datum(value: Any): B = ???
+  def datum(value: Any): B = js.native
 
-  def datum[T](value: ElementIterator[A, T]): B = ???
+  def datum[T](value: ElementIterator[A, T]): B = js.native
 
-  def filter(selector: String): B = ???
+  def filter(selector: String): B = js.native
 
-  def filter[T](filter: ElementIterator[A, T]): B = ???
+  def filter[T](filter: ElementIterator[A, T]): B = js.native
 
-  def sort[T](comparator: js.Function2[T, T, Int]): B = ???
+  def sort[T](comparator: js.Function2[T, T, Int]): B = js.native
 
-  def order(): B = ???
+  def order(): B = js.native
 }
 
 object DataDriven {
@@ -41,9 +41,9 @@ object DataDriven {
   trait BoundSelection[A <: Node, B <: Selection[A, B]] extends js.Object {
     this: B =>
 
-    def enter(): SelectionBuilder[A, B] = ???
+    def enter(): SelectionBuilder[A, B] = js.native
 
-    def exit(): B = ???
+    def exit(): B = js.native
   }
 
   trait SelectionBuilder[A <: Node, B <: Selection[A, B]] extends Container[A, B]

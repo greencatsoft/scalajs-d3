@@ -1,21 +1,19 @@
-scalaJSSettings
-
 name := "scalajs-d3"
 
 description := "D3.js bindings for Scala.js."
 
 organization := "com.greencatsoft"
 
-version := "0.1-SNAPSHOT"
+version := "0.1"
 
-scalaVersion := "2.11.2"
+scalaVersion := "2.11.5"
 
 scalacOptions ++= Seq("-feature","-deprecation")
 
 homepage := Some(url("http://github.com/greencatsoft/scalajs-d3"))
 
 libraryDependencies ++= Seq(
-  "org.scala-lang.modules.scalajs" %%% "scalajs-dom" % "0.6")
+  "org.scala-js" %%% "scalajs-dom" % "0.7.0")
 
 publishTo := {
   val nexus = "https://oss.sonatype.org/"
@@ -28,6 +26,8 @@ publishTo := {
 publishMavenStyle := true
 
 pomIncludeRepository := { _ => false }
+
+lazy val root = project.in(file(".")).enablePlugins(ScalaJSPlugin)
 
 pomExtra := (
   <licenses>

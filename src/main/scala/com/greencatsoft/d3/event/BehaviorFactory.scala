@@ -8,7 +8,7 @@ import com.greencatsoft.d3.selection.Selection
 
 trait BehaviorFactory[A <: Node, B <: Selection[A, B]] extends js.Object {
 
-  def drag(): Drag[A, B] = ???
+  def drag(): Drag[A, B] = js.native
 
-  def zoom(): Zoom[A, B] = ???
+  def zoom(): Zoom[A, B] = js.native
 }

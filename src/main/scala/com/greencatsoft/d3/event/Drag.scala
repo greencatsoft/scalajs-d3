@@ -12,20 +12,20 @@ import com.greencatsoft.d3.selection.{ ElementIterator, Selection }
 
 trait Drag[A <: Node, B <: Selection[A, B]] extends EventSource[A, B] {
 
-  def origin[T](): ElementIterator[A, T] = ???
+  def origin[T](): ElementIterator[A, T] = js.native
 
-  def origin[T](fn: ElementIterator[A, T]): B = ???
+  def origin[T](fn: ElementIterator[A, T]): B = js.native
 }
 
 trait D3DragEvent extends D3Event[Event] {
 
-  val x: UndefOr[Double] = ???
+  val x: UndefOr[Double] = js.native
 
-  val y: UndefOr[Double] = ???
+  val y: UndefOr[Double] = js.native
 
-  val dx: UndefOr[Double] = ???
+  val dx: UndefOr[Double] = js.native
 
-  val dy: UndefOr[Double] = ???
+  val dy: UndefOr[Double] = js.native
 }
 
 object Drag {

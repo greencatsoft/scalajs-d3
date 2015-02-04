@@ -14,17 +14,17 @@ import com.greencatsoft.d3.selection.Selection
 
 trait EventChain[A <: Node, B <: Selection[A, B]] extends js.Object {
 
-  def event: UndefOr[D3Event[_]] = ???
+  def event: UndefOr[D3Event[_]] = js.native
 
-  def mouse(container: Node): UndefOr[js.Array[Double]] = ???
+  def mouse(container: Node): UndefOr[js.Array[Double]] = js.native
 
-  def touch(container: Node): UndefOr[js.Array[js.Array[Double]]] = ???
+  def touch(container: Node): UndefOr[js.Array[js.Array[Double]]] = js.native
 
-  def touch(container: Node, identifier: String): UndefOr[js.Array[js.Array[Double]]] = ???
+  def touch(container: Node, identifier: String): UndefOr[js.Array[js.Array[Double]]] = js.native
 
-  def touches(container: Node): UndefOr[js.Array[js.Array[Double]]] = ???
+  def touches(container: Node): UndefOr[js.Array[js.Array[Double]]] = js.native
 
-  def behavior: BehaviorFactory[A, B] = ???
+  def behavior: BehaviorFactory[A, B] = js.native
 }
 
 object EventChain {

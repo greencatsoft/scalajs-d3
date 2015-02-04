@@ -6,5 +6,5 @@ import org.scalajs.dom.Node
 
 trait Callable[A <: Node, B <: Selection[A, B]] extends js.Object {
 
-  def call(fn: Any): B = ???
+  def call(fn: Any): B = js.native
 }

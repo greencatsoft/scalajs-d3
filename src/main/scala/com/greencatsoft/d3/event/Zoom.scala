@@ -8,42 +8,42 @@ import com.greencatsoft.d3.selection.Selection
 
 trait Zoom[A <: Node, B <: Selection[A, B]] extends EventSource[A, B] {
 
-  def translate(): js.Array[Double] = ???
+  def translate(): js.Array[Double] = js.native
 
-  def translate(translation: js.Array[Double]): B = ???
+  def translate(translation: js.Array[Double]): B = js.native
 
-  def scale(): Double = ???
+  def scale(): Double = js.native
 
-  def scale(scale: Double): B = ???
+  def scale(scale: Double): B = js.native
 
-  def scaleExtent(): js.Array[Double] = ???
+  def scaleExtent(): js.Array[Double] = js.native
 
-  def scaleExtent(extend: js.Array[Double]): B = ???
+  def scaleExtent(extend: js.Array[Double]): B = js.native
 
-  def center(): js.Array[Double] = ???
+  def center(): js.Array[Double] = js.native
 
-  def center(extend: js.Array[Double]): B = ???
+  def center(extend: js.Array[Double]): B = js.native
 
-  def x(): Double = ???
+  def x(): Double = js.native
 
-  def x(x: Double): B = ???
+  def x(x: Double): B = js.native
 
-  def y(): Double = ???
+  def y(): Double = js.native
 
-  def y(y: Double): B = ???
+  def y(y: Double): B = js.native
 
-  def size(): js.Array[Double] = ???
+  def size(): js.Array[Double] = js.native
 
-  def size(extend: js.Array[Double]): B = ???
+  def size(extend: js.Array[Double]): B = js.native
 
-  def apply(selection: B): B = ???
+  def apply(selection: B): B = js.native
 
-  def event(selection: B): B = ???
+  def event(selection: B): B = js.native
 }
 
 trait D3ZoomEvent extends D3Event[Event] {
 
-  val translate: js.Array[Double] = ???
+  val translate: js.Array[Double] = js.native
 
-  val scale: Double = ???
+  val scale: Double = js.native
 }
