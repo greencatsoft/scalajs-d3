@@ -4,7 +4,8 @@ import scala.language.implicitConversions
 import scala.math.{ max, min }
 import scala.scalajs.js.annotation.JSExportAll
 
-import org.scalajs.dom.{ ClientRect, SVGMatrix, SVGRect, SVGSVGElement }
+import org.scalajs.dom.ClientRect
+import org.scalajs.dom.svg.{ Matrix, Rect, SVG }
 
 @JSExportAll
 case class Bounds(x: Double, y: Double, width: Double, height: Double) extends Transformable[Bounds] {
@@ -57,7 +58,7 @@ case class Bounds(x: Double, y: Double, width: Double, height: Double) extends T
 
   def size = Dimension(width, height)
 
-  override def matrixTransform(matrix: SVGMatrix)(implicit ownerNode: SVGSVGElement): Bounds =
+  override def matrixTransform(matrix: Matrix)(implicit ownerNode: SVG): Bounds =
     Quad.fromBounds(this).matrixTransform(matrix).bounds
 
   override def toString(): String = s"Bounds(x: $x, y: $y, width: $width, height: $height)"
@@ -74,7 +75,7 @@ object Bounds {
     case Nil => Bounds.empty
   }
 
-  implicit def svgRect2Bounds(rect: SVGRect) = {
+  implicit def svgRect2Bounds(rect: Rect) = {
     require(rect != null, "Missing argument 'rect'.")
 
     Bounds(rect.x, rect.y, rect.width, rect.height)
@@ -86,7 +87,7 @@ object Bounds {
     Bounds(rect.left, rect.top, rect.width, rect.height)
   }
 
-  implicit def bounds2Rect(bounds: Bounds)(implicit viewNode: SVGSVGElement) = {
+  implicit def bounds2Rect(bounds: Bounds)(implicit viewNode: SVG) = {
     require(bounds != null, "Missing argument 'bounds'.")
 
     val rect = viewNode.createSVGRect

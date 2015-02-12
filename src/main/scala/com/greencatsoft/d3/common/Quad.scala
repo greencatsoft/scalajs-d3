@@ -3,7 +3,7 @@ package com.greencatsoft.d3.common
 import scala.language.implicitConversions
 import scala.scalajs.js.annotation.JSExportAll
 
-import org.scalajs.dom.{ SVGMatrix, SVGSVGElement }
+import org.scalajs.dom.svg.{ Matrix, SVG }
 
 /**
  * DomQuad interface.
@@ -18,7 +18,7 @@ case class Quad(p1: Point, p2: Point, p3: Point, p4: Point) extends Transformabl
 
   def bounds: Bounds = Bounds(p1.x, p1.y, 0, 0) + p2 + p3 + p4
 
-  override def matrixTransform(matrix: SVGMatrix)(implicit ownerNode: SVGSVGElement): Quad =
+  override def matrixTransform(matrix: Matrix)(implicit ownerNode: SVG): Quad =
     Quad(
       p1.matrixTransform(matrix),
       p2.matrixTransform(matrix),

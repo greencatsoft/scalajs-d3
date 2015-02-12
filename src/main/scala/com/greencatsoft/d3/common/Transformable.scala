@@ -1,8 +1,8 @@
 package com.greencatsoft.d3.common
 
-import org.scalajs.dom.{ SVGMatrix, SVGSVGElement }
+import org.scalajs.dom.svg.{ Matrix, SVG }
 
 trait Transformable[A <: Transformable[A]] {
 
-  def matrixTransform(matrix: SVGMatrix)(implicit ownerNode: SVGSVGElement): A
+  def matrixTransform(matrix: Matrix)(implicit ownerNode: SVG): A
 }

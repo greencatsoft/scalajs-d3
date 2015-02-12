@@ -1,14 +1,16 @@
 package com.greencatsoft
 
 import scala.language.implicitConversions
-
 import scala.scalajs.js
 import scala.scalajs.js.{ GlobalScope, RegExp, UndefOr }
 import scala.scalajs.js.Any.{ jsArrayOps, wrapArray }
 import scala.scalajs.js.UndefOr.{ any2undefOrA, undefOr2ops }
 
-import org.scalajs.dom.{ HTMLElement, Node, NodeList, SVGElement, SVGGElement, SVGLocatable, SVGMatrix, SVGSVGElement, SVGStylable, SVGTransformable, document }
-import org.scalajs.dom.extensions.Castable
+import org.scalajs.dom
+import org.scalajs.dom.{ NodeList, document }
+import org.scalajs.dom.ext.Castable
+import org.scalajs.dom.raw.Node
+import org.scalajs.dom.svg.{ G, Locatable, Matrix, SVG, Stylable }
 import org.scalajs.dom.window
 
 import com.greencatsoft.d3.D3Api
@@ -27,24 +29,24 @@ package object d3 {
     private[d3] override def valid(node: UndefOr[Node]): Boolean = node.isDefined
   }
 
-  object svg extends D3Provider[SVGElement, SvgSelection] {
-    trait D3 extends D3Api[SVGElement, SvgSelection]
+  object svg extends D3Provider[dom.svg.Element, SvgSelection] {
+    trait D3 extends D3Api[dom.svg.Element, SvgSelection]
 
     implicit override val d3: D3 = global.d3.cast[D3]
 
-    type LocatableElement = SVGElement with SVGLocatable
+    type LocatableElement = dom.svg.Element with Locatable
 
-    type TransformableElement = SVGElement with SVGTransformable
+    type TransformableElement = dom.svg.Element with dom.svg.Transformable
 
-    type StylableElement = SVGElement with SVGStylable
+    type StylableElement = dom.svg.Element with Stylable
 
     implicit class D3LocatableElement(element: LocatableElement) {
 
-      implicit def viewNode: SVGSVGElement = {
+      implicit def viewNode: SVG = {
         (element.tagName match {
           case "svg" => element
           case _ => element.viewportElement
-        }).cast[SVGSVGElement]
+        }).cast[SVG]
       }
 
       def toLocalBounds(fromElem: LocatableElement): Bounds =
@@ -59,7 +61,7 @@ package object d3 {
       def toLocalCoords[A <: Transformable[A]](transformable: A, fromElem: LocatableElement): A =
         transformable.matrixTransform(getTransformToElementFix(fromElem).inverse)
 
-      def getTransformToElementFix(toElem: SVGElement with LocatableElement): SVGMatrix = {
+      def getTransformToElementFix(toElem: dom.svg.Element with LocatableElement): Matrix = {
         val isWebkit = RegExp("WebKit").test(window.navigator.userAgent.toString)
 
         if (isWebkit) {
@@ -76,10 +78,10 @@ package object d3 {
 
               val clone = {
                 val g = document.createElementNS("http://www.w3.org/2000/svg", "g")
-                parent.insertBefore(g, toElem).cast[SVGGElement]
+                parent.insertBefore(g, toElem).cast[G]
               }
 
-              Option(toElem.cast[SVGTransformable].transform.baseVal.consolidate).foreach(clone.transform.baseVal.initialize)
+              Option(toElem.cast[dom.svg.Transformable].transform.baseVal.consolidate).foreach(clone.transform.baseVal.initialize)
 
               val matrix = element.getTransformToElement(clone)
               parent.removeChild(clone)
@@ -95,8 +97,8 @@ package object d3 {
       node.map(_.namespaceURI).filter(_ != null).exists(_.endsWith("svg"))
   }
 
-  object html extends D3Provider[HTMLElement, HtmlSelection] {
-    trait D3 extends D3Api[HTMLElement, HtmlSelection]
+  object html extends D3Provider[dom.html.Element, HtmlSelection] {
+    trait D3 extends D3Api[dom.html.Element, HtmlSelection]
 
     implicit override val d3: D3 = global.d3.cast[D3]
 

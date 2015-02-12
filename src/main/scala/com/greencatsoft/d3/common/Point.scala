@@ -5,7 +5,8 @@ import scala.math.{ pow, sqrt }
 import scala.scalajs.js
 import scala.scalajs.js.annotation.JSExportAll
 
-import org.scalajs.dom.{ SVGMatrix, SVGPoint, SVGSVGElement }
+import org.scalajs.dom.svg
+import org.scalajs.dom.svg.{ Matrix, SVG }
 
 @JSExportAll
 case class Point(x: Double, y: Double) extends Transformable[Point] {
@@ -23,7 +24,7 @@ case class Point(x: Double, y: Double) extends Transformable[Point] {
     sqrt(pow(p.x, 2) + pow(p.y, 2))
   }
 
-  override def matrixTransform(matrix: SVGMatrix)(implicit ownerNode: SVGSVGElement): Point = {
+  override def matrixTransform(matrix: Matrix)(implicit ownerNode: SVG): Point = {
     val p = ownerNode.createSVGPoint
 
     p.x = x
@@ -35,9 +36,9 @@ case class Point(x: Double, y: Double) extends Transformable[Point] {
 
 object Point {
 
-  implicit def fromSvgPoint(point: SVGPoint) = Point(point.x, point.y)
+  implicit def fromSvgPoint(point: svg.Point) = Point(point.x, point.y)
 
-  implicit def toSvgPoint(point: Point)(implicit ownerNode: SVGSVGElement): SVGPoint = {
+  implicit def toSvgPoint(point: Point)(implicit ownerNode: SVG): svg.Point = {
     val p = ownerNode.createSVGPoint
 
     p.x = point.x

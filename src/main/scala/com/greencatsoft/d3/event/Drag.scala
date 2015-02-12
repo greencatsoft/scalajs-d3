@@ -5,7 +5,7 @@ import scala.scalajs.js.UndefOr
 import scala.scalajs.js.UndefOr.undefOr2ops
 
 import org.scalajs.dom.{ Event, Node, TouchList }
-import org.scalajs.dom.extensions.Castable
+import org.scalajs.dom.ext.Castable
 
 import com.greencatsoft.d3.common.Point
 import com.greencatsoft.d3.selection.{ ElementIterator, Selection }
