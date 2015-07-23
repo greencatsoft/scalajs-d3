@@ -11,7 +11,7 @@ trait DataDriven[A <: Node, B <: Selection[A, B]] extends js.Object {
 
   def data[T](): js.Array[T] = js.native
 
-  def data(values: js.Array[Any]): BoundSelection[A, B] = js.native
+  def data[T](values: js.Array[T]): BoundSelection[A, B] = js.native
 
   def data[T](values: js.Array[T], key: KeyFunction[T]): BoundSelection[A, B] = js.native
 
