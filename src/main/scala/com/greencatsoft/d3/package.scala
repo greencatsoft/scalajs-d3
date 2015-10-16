@@ -26,7 +26,7 @@ package object d3 {
 
     implicit override val d3: D3 = global.d3.cast[D3]
 
-    private[d3] override def valid(node: UndefOr[Node]): Boolean = node.isDefined
+    private[d3] override def valid(node: Node): Boolean = true
   }
 
   object svg extends D3Provider[dom.svg.Element, SvgSelection] {
@@ -93,8 +93,7 @@ package object d3 {
       }
     }
 
-    private[d3] override def valid(node: UndefOr[Node]): Boolean =
-      node.map(_.namespaceURI).filter(_ != null).exists(_.endsWith("svg"))
+    private[d3] override def valid(node: Node): Boolean = node.isInstanceOf[dom.svg.Element]
   }
 
   object html extends D3Provider[dom.html.Element, HtmlSelection] {
@@ -102,8 +101,7 @@ package object d3 {
 
     implicit override val d3: D3 = global.d3.cast[D3]
 
-    private[d3] override def valid(node: UndefOr[Node]): Boolean =
-      node.map(_.namespaceURI).filter(_ != null).exists(_.endsWith("html"))
+    private[d3] override def valid(node: Node): Boolean = node.isInstanceOf[dom.html.Element]
   }
 
   private[d3] object global extends GlobalScope {
@@ -175,6 +173,6 @@ package object d3 {
         for (i <- 0 until list.length; item = list.item(i) if valid(item)) f(item.cast[A])
     }
 
-    private[d3] def valid(node: UndefOr[Node]): Boolean
+    private[d3] def valid(node: Node): Boolean
   }
 }
