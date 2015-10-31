@@ -4,7 +4,7 @@ description := "D3.js bindings for Scala.js."
 
 organization := "com.greencatsoft"
 
-version := "0.2-SNAPSHOT"
+version := "0.2"
 
 scalaVersion := "2.11.7"
 
