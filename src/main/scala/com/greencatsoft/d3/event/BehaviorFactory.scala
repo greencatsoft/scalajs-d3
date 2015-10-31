@@ -6,6 +6,7 @@ import org.scalajs.dom.Node
 
 import com.greencatsoft.d3.selection.Selection
 
+@js.native
 trait BehaviorFactory[A <: Node, B <: Selection[A, B]] extends js.Object {
 
   def drag(): Drag[A, B] = js.native

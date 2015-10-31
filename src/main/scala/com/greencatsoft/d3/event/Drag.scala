@@ -10,6 +10,7 @@ import org.scalajs.dom.ext.Castable
 import com.greencatsoft.d3.common.Point
 import com.greencatsoft.d3.selection.{ ElementIterator, Selection }
 
+@js.native
 trait Drag[A <: Node, B <: Selection[A, B]] extends EventSource[A, B] {
 
   def origin[T](): ElementIterator[A, T] = js.native
@@ -17,6 +18,7 @@ trait Drag[A <: Node, B <: Selection[A, B]] extends EventSource[A, B] {
   def origin[T](fn: ElementIterator[A, T]): B = js.native
 }
 
+@js.native
 trait D3DragEvent extends D3Event[Event] {
 
   val x: UndefOr[Double] = js.native

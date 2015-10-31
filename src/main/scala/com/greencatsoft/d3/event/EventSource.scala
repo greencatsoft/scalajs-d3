@@ -7,6 +7,7 @@ import org.scalajs.dom.Node
 
 import com.greencatsoft.d3.selection.{ ElementIterator, Selection }
 
+@js.native
 trait EventSource[A <: Node, B <: Selection[A, B]] extends js.Object {
 
   def on(event: String): UndefOr[js.ThisFunction] = js.native

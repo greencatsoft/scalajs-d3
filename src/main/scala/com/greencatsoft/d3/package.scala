@@ -22,17 +22,19 @@ import com.greencatsoft.d3.selection.{ GenericSelection, HtmlSelection, Selectio
 package object d3 {
 
   object generic extends D3Provider[Node, GenericSelection] {
+    @js.native
     trait D3 extends D3Api[Node, GenericSelection]
 
-    implicit override val d3: D3 = global.d3.cast[D3]
+    implicit override val d3: D3 = GlobalDefinitions.d3.cast[D3]
 
     private[d3] override def valid(node: Node): Boolean = true
   }
 
   object svg extends D3Provider[dom.svg.Element, SvgSelection] {
+    @js.native
     trait D3 extends D3Api[dom.svg.Element, SvgSelection]
 
-    implicit override val d3: D3 = global.d3.cast[D3]
+    implicit override val d3: D3 = GlobalDefinitions.d3.cast[D3]
 
     type LocatableElement = dom.svg.Element with Locatable
 
@@ -97,15 +99,12 @@ package object d3 {
   }
 
   object html extends D3Provider[dom.html.Element, HtmlSelection] {
+    @js.native
     trait D3 extends D3Api[dom.html.Element, HtmlSelection]
 
-    implicit override val d3: D3 = global.d3.cast[D3]
+    implicit override val d3: D3 = GlobalDefinitions.d3.cast[D3]
 
     private[d3] override def valid(node: Node): Boolean = node.isInstanceOf[dom.html.Element]
-  }
-
-  private[d3] object global extends GlobalScope {
-    val d3: D3Api[_, _] = js.native
   }
 
   private[d3] trait D3Provider[A <: Node, B <: Selection[A, B]] {

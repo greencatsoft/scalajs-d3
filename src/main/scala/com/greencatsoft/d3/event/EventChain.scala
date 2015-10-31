@@ -9,9 +9,9 @@ import org.scalajs.dom.{ Event, Node }
 import org.scalajs.dom.ext.Castable
 
 import com.greencatsoft.d3.common.Point
-import com.greencatsoft.d3.global.d3
 import com.greencatsoft.d3.selection.Selection
 
+@js.native
 trait EventChain[A <: Node, B <: Selection[A, B]] extends js.Object {
 
   def event: UndefOr[D3Event[_]] = js.native
@@ -29,7 +29,7 @@ trait EventChain[A <: Node, B <: Selection[A, B]] extends js.Object {
 
 object EventChain {
 
-  import com.greencatsoft.d3.global.d3
+  import com.greencatsoft.d3.GlobalDefinitions.d3
 
   def event[A <: Event]: Option[A] = d3.event.toOption.map(_.cast[A])
 

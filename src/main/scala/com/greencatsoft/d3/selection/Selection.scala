@@ -6,6 +6,7 @@ import org.scalajs.dom.{ Node, html, svg }
 
 import com.greencatsoft.d3.event.EventSource
 
+@js.native
 trait Selection[A <: Node, B <: Selection[A, B]] extends js.Array[js.Array[A]]
   with SelectionSource[A, B]
   with AttributeHolder[A, B]
@@ -19,9 +20,12 @@ trait Selection[A <: Node, B <: Selection[A, B]] extends js.Array[js.Array[A]]
   this: B =>
 }
 
+@js.native
 trait GenericSelection extends Selection[Node, GenericSelection]
 
+@js.native
 trait SvgSelection extends Selection[svg.Element, SvgSelection]
 
+@js.native
 trait HtmlSelection extends Selection[html.Element, HtmlSelection]
   with HtmlContentEditor[html.Element, HtmlSelection]

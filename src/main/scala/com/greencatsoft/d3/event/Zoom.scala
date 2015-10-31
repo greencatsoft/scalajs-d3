@@ -6,6 +6,7 @@ import org.scalajs.dom.{ Event, Node }
 
 import com.greencatsoft.d3.selection.Selection
 
+@js.native
 trait Zoom[A <: Node, B <: Selection[A, B]] extends EventSource[A, B] {
 
   def translate(): js.Array[Double] = js.native
@@ -41,6 +42,7 @@ trait Zoom[A <: Node, B <: Selection[A, B]] extends EventSource[A, B] {
   def event(selection: B): B = js.native
 }
 
+@js.native
 trait D3ZoomEvent extends D3Event[Event] {
 
   val translate: js.Array[Double] = js.native

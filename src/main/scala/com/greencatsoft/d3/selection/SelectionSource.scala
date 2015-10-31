@@ -4,6 +4,7 @@ import scala.scalajs.js
 
 import org.scalajs.dom.{ Node, NodeList }
 
+@js.native
 trait SelectionSource[A <: Node, B <: Selection[A, B]] extends js.Object {
 
   def select(selector: String): B = js.native

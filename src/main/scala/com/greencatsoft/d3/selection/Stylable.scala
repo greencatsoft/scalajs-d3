@@ -4,6 +4,7 @@ import scala.scalajs.js
 
 import org.scalajs.dom.Node
 
+@js.native
 trait Stylable[A <: Node, B <: Selection[A, B]] extends js.Object {
 
   def classed(name: String): Boolean = js.native

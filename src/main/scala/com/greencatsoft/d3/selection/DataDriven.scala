@@ -5,6 +5,7 @@ import scala.scalajs.js.UndefOr
 
 import org.scalajs.dom.Node
 
+@js.native
 trait DataDriven[A <: Node, B <: Selection[A, B]] extends js.Object {
 
   import DataDriven._
@@ -38,6 +39,7 @@ object DataDriven {
 
   type KeyFunction[A] = js.ThisFunction2[Any, A, Int, Any]
 
+  @js.native
   trait BoundSelection[A <: Node, B <: Selection[A, B]] extends js.Object {
     this: B =>
 
@@ -46,5 +48,6 @@ object DataDriven {
     def exit(): B = js.native
   }
 
+  @js.native
   trait SelectionBuilder[A <: Node, B <: Selection[A, B]] extends Container[A, B]
 }

@@ -5,6 +5,7 @@ import scala.scalajs.js.UndefOr
 
 import org.scalajs.dom.Node
 
+@js.native
 trait AttributeHolder[A <: Node, B <: Selection[A, B]] extends js.Object {
 
   def attr(name: String, value: Any): B = js.native
