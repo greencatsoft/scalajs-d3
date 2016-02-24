@@ -13,3 +13,11 @@ trait AttributeHolder[A <: Node, B <: Selection[A, B]] extends js.Object {
 
   def attr(name: String): String = js.native
 }
+
+object AttributeHolder {
+
+  implicit class OptionalAttributeHolder[A <: Node, B <: Selection[A, B]](holder: AttributeHolder[A, B]) {
+
+    def attrOps(name: String): Option[String] = Option(holder.attr(name))
+  }
+}

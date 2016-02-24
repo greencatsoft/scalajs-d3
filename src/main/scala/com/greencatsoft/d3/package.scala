@@ -162,6 +162,8 @@ package object d3 {
 
         element.insertBefore(clone, elem).cast[T]
       }
+
+      def attrOps(name: String): Option[String] = d3.select(element).attrOps(name)
     }
 
     implicit class D3ElementList(list: NodeList) extends Traversable[A] {
