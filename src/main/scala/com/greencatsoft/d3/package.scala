@@ -2,9 +2,8 @@ package com.greencatsoft
 
 import scala.language.implicitConversions
 import scala.scalajs.js
-import scala.scalajs.js.{ GlobalScope, RegExp, UndefOr }
+import scala.scalajs.js.RegExp
 import scala.scalajs.js.Any.{ jsArrayOps, wrapArray }
-import scala.scalajs.js.UndefOr.{ any2undefOrA, undefOr2ops }
 
 import org.scalajs.dom
 import org.scalajs.dom.{ NodeList, document }
@@ -13,7 +12,6 @@ import org.scalajs.dom.raw.Node
 import org.scalajs.dom.svg.{ G, Locatable, Matrix, SVG, Stylable }
 import org.scalajs.dom.window
 
-import com.greencatsoft.d3.D3Api
 import com.greencatsoft.d3.common.{ Point, Transformable }
 import com.greencatsoft.d3.common.Bounds
 import com.greencatsoft.d3.common.Bounds.svgRect2Bounds
@@ -144,7 +142,7 @@ package object d3 {
 
           result.find(filter) match {
             case Some(e) => Some(e)
-            case None => Option(node.parentNode).map(search(_)).flatten
+            case None => Option(node.parentNode).flatMap(search)
           }
         }
 
@@ -156,7 +154,7 @@ package object d3 {
 
         def removeId(e: A) {
           d3.select(e).attr("id", null)
-          e.childNodes.foreach(removeId(_))
+          e.childNodes.foreach(removeId)
         }
 
         val clone = elem.cloneNode(deepCopy).cast[A]
@@ -164,6 +162,8 @@ package object d3 {
 
         element.insertBefore(clone, elem).cast[T]
       }
+
+      def attrOps(name: String): Option[String] = d3.select(element).attrOps(name)
     }
 
     implicit class D3ElementList(list: NodeList) extends Traversable[A] {
