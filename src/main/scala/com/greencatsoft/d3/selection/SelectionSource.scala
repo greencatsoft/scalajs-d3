@@ -18,4 +18,6 @@ trait SelectionSource[A <: Node, B <: Selection[A, B]] extends js.Object {
   def selectAll(nodes: NodeList): B = js.native
 
   def selection(): B = js.native
+
+  def empty(): Boolean = js.native
 }
