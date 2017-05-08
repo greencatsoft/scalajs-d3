@@ -6,14 +6,14 @@ organization := "com.greencatsoft"
 
 version := "0.3-SNAPSHOT"
 
-scalaVersion := "2.11.7"
+scalaVersion := "2.11.11"
 
 scalacOptions ++= Seq("-feature","-deprecation")
 
 homepage := Some(url("http://github.com/greencatsoft/scalajs-d3"))
 
 libraryDependencies ++= Seq(
-  "org.scala-js" %%% "scalajs-dom" % "0.8.2")
+  "org.scala-js" %%% "scalajs-dom" % "0.9.2")
 
 publishTo := {
   val nexus = "https://oss.sonatype.org/"
