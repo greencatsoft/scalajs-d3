@@ -120,17 +120,19 @@ package object d3 {
 
     implicit class D3Element(element: A) {
 
+      def selection: B = element
+
       def addClass(cls: String): A = {
-        d3.select(element).classed(js.Dictionary(cls -> true))
+        selection.classed(js.Dictionary(cls -> true))
         element
       }
 
       def removeClass(cls: String): A = {
-        d3.select(element).classed(js.Dictionary(cls -> false))
+        selection.classed(js.Dictionary(cls -> false))
         element
       }
 
-      def hasClass(cls: String): Boolean = d3.select(element).classed(cls)
+      def hasClass(cls: String): Boolean = selection.classed(cls)
 
       def closest(filter: A => Boolean): Option[A] = {
         require(filter != null, "Missing argument 'filter'.")
@@ -163,7 +165,7 @@ package object d3 {
         element.insertBefore(clone, elem).cast[T]
       }
 
-      def attrOps(name: String): Option[String] = d3.select(element).attrOps(name)
+      def attrOps(name: String): Option[String] = selection.attrOps(name)
     }
 
     implicit class D3ElementList(list: NodeList) extends Traversable[A] {
