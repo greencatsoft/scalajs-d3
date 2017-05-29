@@ -127,9 +127,9 @@ package object d3 {
 
       def selection: B
 
-      def node: Option[A] = selection.head.headOption.filter(_ != null)
+      def option: Option[A] = Option(selection.node()).filter(_ != null)
 
-      def nodes: Seq[A] = selection.head
+      def seq: Seq[A] = selection.nodes()
     }
 
     trait PimpedElement extends Any with PimpedSelection {
@@ -139,12 +139,12 @@ package object d3 {
       override def selection: B = element
 
       def addClass(cls: String): A = {
-        selection.classed(js.Dictionary(cls -> true))
+        selection.classed(cls, true)
         element
       }
 
       def removeClass(cls: String): A = {
-        selection.classed(js.Dictionary(cls -> false))
+        selection.classed(cls, false)
         element
       }
 

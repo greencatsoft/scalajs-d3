@@ -7,8 +7,7 @@ import org.scalajs.dom.{ Node, html, svg }
 import com.greencatsoft.d3.event.EventSource
 
 @js.native
-trait Selection[A <: Node, B <: Selection[A, B]] extends js.Array[js.Array[A]]
-  with SelectionSource[A, B]
+trait Selection[A <: Node, B <: Selection[A, B]] extends SelectionSource[A, B]
   with AttributeHolder[A, B]
   with Stylable[A, B]
   with PropertyHolder[A, B]
