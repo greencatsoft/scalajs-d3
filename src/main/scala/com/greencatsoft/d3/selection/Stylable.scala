@@ -9,6 +9,9 @@ trait Stylable[A <: Node, B <: Selection[A, B]] extends js.Object {
 
   def classed(name: String): Boolean = js.native
 
+  def classed(name: String, value: Boolean): Boolean = js.native
+
+  // d3-selection-multi required
   def classed(classes: js.Dictionary[Boolean]): B = js.native
 
   def classed[T](provider: ElementIterator[A, T]): B = js.native

@@ -20,4 +20,10 @@ trait SelectionSource[A <: Node, B <: Selection[A, B]] extends js.Object {
   def selection(): B = js.native
 
   def empty(): Boolean = js.native
+
+  def node(): A = js.native
+
+  def nodes(): js.Array[A] = js.native
+
+  def size(): Int = js.native
 }

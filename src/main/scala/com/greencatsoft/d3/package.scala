@@ -26,6 +26,10 @@ package object d3 {
     implicit override val d3: D3 = GlobalDefinitions.d3.cast[D3]
 
     private[d3] override def valid(node: Node): Boolean = true
+
+    implicit class D3NodeResult(val selection: GenericSelection) extends AnyVal with PimpedSelection
+
+    implicit class D3Element(val element: Node) extends AnyVal with PimpedElement
   }
 
   object svg extends D3Provider[dom.svg.Element, SvgSelection] {
@@ -40,7 +44,7 @@ package object d3 {
 
     type StylableElement = dom.svg.Element with Stylable
 
-    implicit class D3LocatableElement(element: LocatableElement) {
+    implicit class D3LocatableElement(val element: LocatableElement) extends AnyVal {
 
       implicit def viewNode: SVG = {
         (element.tagName match {
@@ -94,6 +98,10 @@ package object d3 {
     }
 
     private[d3] override def valid(node: Node): Boolean = node.isInstanceOf[dom.svg.Element]
+
+    implicit class D3NodeResult(val selection: SvgSelection) extends AnyVal with PimpedSelection
+
+    implicit class D3Element(val element: dom.svg.Element) extends AnyVal with PimpedElement
   }
 
   object html extends D3Provider[dom.html.Element, HtmlSelection] {
@@ -103,6 +111,10 @@ package object d3 {
     implicit override val d3: D3 = GlobalDefinitions.d3.cast[D3]
 
     private[d3] override def valid(node: Node): Boolean = node.isInstanceOf[dom.html.Element]
+
+    implicit class D3NodeResult(val selection: HtmlSelection) extends AnyVal with PimpedSelection
+
+    implicit class D3Element(val element: dom.html.Element) extends AnyVal with PimpedElement
   }
 
   private[d3] trait D3Provider[A <: Node, B <: Selection[A, B]] {
@@ -111,26 +123,32 @@ package object d3 {
 
     implicit def node2selection(elem: A): B = d3.select(elem)
 
-    implicit class D3NodeResult(selection: B) {
+    trait PimpedSelection extends Any {
 
-      def node: Option[A] = selection.head.headOption.filter(_ != null)
+      def selection: B
 
-      def nodes: Seq[A] = selection.head
+      def option: Option[A] = Option(selection.node()).filter(_ != null)
+
+      def seq: Seq[A] = selection.nodes()
     }
 
-    implicit class D3Element(element: A) {
+    trait PimpedElement extends Any with PimpedSelection {
+
+      def element: A
+
+      override def selection: B = element
 
       def addClass(cls: String): A = {
-        d3.select(element).classed(js.Dictionary(cls -> true))
+        selection.classed(cls, true)
         element
       }
 
       def removeClass(cls: String): A = {
-        d3.select(element).classed(js.Dictionary(cls -> false))
+        selection.classed(cls, false)
         element
       }
 
-      def hasClass(cls: String): Boolean = d3.select(element).classed(cls)
+      def hasClass(cls: String): Boolean = selection.classed(cls)
 
       def closest(filter: A => Boolean): Option[A] = {
         require(filter != null, "Missing argument 'filter'.")
@@ -163,7 +181,7 @@ package object d3 {
         element.insertBefore(clone, elem).cast[T]
       }
 
-      def attrOps(name: String): Option[String] = d3.select(element).attrOps(name)
+      def attrOps(name: String): Option[String] = selection.attrOps(name)
     }
 
     implicit class D3ElementList(list: NodeList) extends Traversable[A] {
