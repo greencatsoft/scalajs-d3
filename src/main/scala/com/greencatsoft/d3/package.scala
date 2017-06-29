@@ -167,7 +167,7 @@ package object d3 {
         search(element)
       }
 
-      def appendClone[T <: A](elem: T, deepCopy: Boolean = true): T = {
+      def appendClone[T <: A](elem: T, deepCopy: Boolean = true, appendBefore: Boolean = true): T = {
         require(elem != null, "Missing argument 'elem'.")
 
         def removeId(e: A) {
@@ -178,7 +178,11 @@ package object d3 {
         val clone = elem.cloneNode(deepCopy).cast[A]
         removeId(clone)
 
-        element.insertBefore(clone, elem).cast[T]
+        if (appendBefore) {
+          element.insertBefore(clone, elem).cast[T]
+        } else {
+          element.insertBefore(clone, elem.nextSibling).cast[T]
+        }
       }
 
       def attrOps(name: String): Option[String] = selection.attrOps(name)
