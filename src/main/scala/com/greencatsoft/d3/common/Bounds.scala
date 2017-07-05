@@ -61,7 +61,7 @@ case class Bounds(x: Double, y: Double, width: Double, height: Double) extends T
   override def matrixTransform(matrix: Matrix)(implicit ownerNode: SVG): Bounds =
     Quad.fromBounds(this).matrixTransform(matrix).bounds
 
-  override def toString(): String = s"Bounds(x: $x, y: $y, width: $width, height: $height)"
+  override def toString: String = s"Bounds(x: $x, y: $y, width: $width, height: $height)"
 }
 
 object Bounds {
@@ -75,19 +75,19 @@ object Bounds {
     case Nil => Bounds.empty
   }
 
-  implicit def svgRect2Bounds(rect: Rect) = {
+  implicit def svgRect2Bounds(rect: Rect): Bounds = {
     require(rect != null, "Missing argument 'rect'.")
 
     Bounds(rect.x, rect.y, rect.width, rect.height)
   }
 
-  implicit def clientRect2Bounds(rect: ClientRect) = {
+  implicit def clientRect2Bounds(rect: ClientRect): Bounds = {
     require(rect != null, "Missing argument 'rect'.")
 
     Bounds(rect.left, rect.top, rect.width, rect.height)
   }
 
-  implicit def bounds2Rect(bounds: Bounds)(implicit viewNode: SVG) = {
+  implicit def bounds2Rect(bounds: Bounds)(implicit viewNode: SVG): Rect = {
     require(bounds != null, "Missing argument 'bounds'.")
 
     val rect = viewNode.createSVGRect

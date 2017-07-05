@@ -36,7 +36,7 @@ case class Point(x: Double, y: Double) extends Transformable[Point] {
 
 object Point {
 
-  implicit def fromSvgPoint(point: svg.Point) = Point(point.x, point.y)
+  implicit def fromSvgPoint(point: svg.Point): Point = Point(point.x, point.y)
 
   implicit def toSvgPoint(point: Point)(implicit ownerNode: SVG): svg.Point = {
     val p = ownerNode.createSVGPoint
@@ -44,10 +44,10 @@ object Point {
     p.x = point.x
     p.y = point.y
 
-    return p
+    p
   }
 
-  implicit def fromArray(point: js.Array[Double]) = Point(point(0), point(1))
+  implicit def fromArray(point: js.Array[Double]): Point = Point(point(0), point(1))
 
-  implicit def toArray(point: Point) = js.Array(point.x, point.y)
+  implicit def toArray(point: Point): js.Array[Double] = js.Array(point.x, point.y)
 }

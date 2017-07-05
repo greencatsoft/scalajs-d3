@@ -13,7 +13,7 @@ trait ContentEditor[A <: Node, B <: Selection[A, B]] extends js.Object {
 
   def text(content: String): B = js.native
 
-  def text[B](provider: ElementIterator[A, B]): B = js.native
+  def text[T](provider: ElementIterator[A, T]): T = js.native
 }
 
 @js.native
@@ -23,5 +23,5 @@ trait HtmlContentEditor[A <: Element, B <: Selection[A, B]] extends ContentEdito
 
   def html(content: String): B = js.native
 
-  def html[A](provider: ElementIterator[Element, A]): B = js.native
+  def html[T](provider: ElementIterator[Element, T]): B = js.native
 }

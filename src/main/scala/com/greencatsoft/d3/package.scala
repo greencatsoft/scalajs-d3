@@ -1,20 +1,19 @@
 package com.greencatsoft
 
 import scala.language.implicitConversions
+
 import scala.scalajs.js
+import scala.scalajs.js.Any.wrapArray
 import scala.scalajs.js.RegExp
-import scala.scalajs.js.Any.{ jsArrayOps, wrapArray }
 
 import org.scalajs.dom
-import org.scalajs.dom.{ NodeList, document }
 import org.scalajs.dom.ext.Castable
 import org.scalajs.dom.raw.Node
-import org.scalajs.dom.svg.{ G, Locatable, Matrix, SVG, Stylable }
-import org.scalajs.dom.window
+import org.scalajs.dom.svg._
+import org.scalajs.dom.{ NodeList, document, window }
 
-import com.greencatsoft.d3.common.{ Point, Transformable }
-import com.greencatsoft.d3.common.Bounds
 import com.greencatsoft.d3.common.Bounds.svgRect2Bounds
+import com.greencatsoft.d3.common.{ Bounds, Point, Transformable }
 import com.greencatsoft.d3.selection.{ GenericSelection, HtmlSelection, Selection, SvgSelection }
 
 package object d3 {
@@ -53,11 +52,9 @@ package object d3 {
         }).cast[SVG]
       }
 
-      def toLocalBounds(fromElem: LocatableElement): Bounds =
-        toLocalCoords(fromElem.getBBox, fromElem)
+      def toLocalBounds(fromElem: LocatableElement): Bounds = toLocalCoords(fromElem.getBBox: Bounds, fromElem)
 
-      def toLocalLocation(fromElem: LocatableElement): Point =
-        toLocalBounds(fromElem).location
+      def toLocalLocation(fromElem: LocatableElement): Point = toLocalBounds(fromElem).location
 
       def toLocalCoords[A <: Transformable[A]](transformable: A): A =
         transformable.matrixTransform(element.getScreenCTM.inverse)
@@ -72,10 +69,7 @@ package object d3 {
           // TODO Workaround for Webkit bug #86010
           toElem.getScreenCTM.inverse.multiply(element.getScreenCTM)
         } else {
-          /*
-       * TODO Workaround for "Error: Argument 1 of SVGGraphicsElement.getTransformToElement does not implement interface SVGGraphicsElement."
-       * when calling getScreenCTM or getTransformToElementon of a clip-path element on Firefox.
-       */
+          // TODO Workaround for "Error: Argument 1 of SVGGraphicsElement.getTransformToElement does not implement interface SVGGraphicsElement." when calling getScreenCTM or getTransformToElement on a clip-path element in Firefox.
           toElem.tagName match {
             case "clipPath" =>
               val parent = toElem.parentNode
@@ -139,12 +133,12 @@ package object d3 {
       override def selection: B = element
 
       def addClass(cls: String): A = {
-        selection.classed(cls, true)
+        selection.classed(cls, value = true)
         element
       }
 
       def removeClass(cls: String): A = {
-        selection.classed(cls, false)
+        selection.classed(cls, value = false)
         element
       }
 

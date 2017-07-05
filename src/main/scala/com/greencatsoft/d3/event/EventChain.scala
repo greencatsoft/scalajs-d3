@@ -33,7 +33,7 @@ object EventChain {
 
   def event[A <: Event]: Option[A] = d3.event.toOption.map(_.cast[A])
 
-  def sourceEvent[A <: Event]: Option[A] = event[D3Event[A]].map(_.sourceEvent.toOption).flatten
+  def sourceEvent[A <: Event]: Option[A] = event[D3Event[A]].flatMap(_.sourceEvent.toOption)
 
   def mouse(container: Node): Option[Point] =
     d3.mouse(container).toOption.map(point => Point(point(0), point(1)))
