@@ -46,10 +46,10 @@ package object d3 {
     implicit class D3LocatableElement(val element: LocatableElement) extends AnyVal {
 
       implicit def viewNode: SVG = {
-        (element.tagName match {
-          case "svg" => element
-          case _ => element.viewportElement
-        }).cast[SVG]
+        element.tagName match {
+          case "svg" => element.asInstanceOf[SVG]
+          case _ => element.ownerSVGElement
+        }
       }
 
       def toLocalBounds(fromElem: LocatableElement): Bounds = toLocalCoords(fromElem.getBBox: Bounds, fromElem)
